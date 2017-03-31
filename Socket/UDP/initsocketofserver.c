@@ -26,19 +26,26 @@ int main()
         exit(-1);
     }
 
-    //bind
     svr_addr.sin_family = AF_INET;
-    svr_addr.sin_port = htons(6666);
-    svr_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    svr_addr.sin_port = htons(8888);
+    svr_addr.sin_addr.s_addr = inet_addr("192.168.0.255");
 
     
     //recvform sendto 
 
     int ret;
     bzero(recvbuf,sizeof(recvbuf));
-    strcpy(sendbuf,"hello server");
+    strcpy(sendbuf,"hello server,192.168.0.142   aaron");
     sendto(s_fd, sendbuf, sizeof(sendbuf),0, (struct sockaddr *)&svr_addr, sizeof(svr_addr));
     ret = recvfrom(s_fd,recvbuf,sizeof(recvbuf),0,(struct sockaddr *)&svr_addr,&s_len);
-    perror("recvform");
+    if (ret < 0)
+    {
+        perror("recvfrom");
+        exit(-1);
+    }
+    else
+    {   
+        printf("send success ! \r\n");
+    }
     close(s_fd);
 }
